@@ -19,13 +19,16 @@ fig, ax = plt.subplots()
 fig.suptitle('Cisnienie w cylindrach')
 plt.style.use('fivethirtyeight')
 
-index = count()
-
 client = ModbusClient(method='rtu', port='/dev/ttyUSB0', timeout=4, baudrate=9600, stopbits=1, bytesize=8, parity='N')
 print(client)
 
 connection = client.connect()
 print(connection)
+
+def addCyl(cylSel):
+    global cylidx
+    cylidx = cylSel
+    return cylidx
 
 def addCyl_1(k):
     global cylidx
@@ -48,17 +51,18 @@ def addCyl_4(k):
     return cylidx
 
 def animate(i):
-    value = client.read_holding_registers(0, 4, unit=0x01)
-    for n in range(len(x)):
-        y[n] = value.registers[n]
-        print(f"{i}: {value.registers[n]}")
+    value = client.read_holding_registers(1, unit=0x01)
+    y = [value, 1000, 1300, 1500]
+    #for n in range(len(x)):
+     #   y[n] = value.registers[n]
+      #  print(f"{i}: {value.registers[n]}")
     for n in range(len(xline)):
         yline[n] = y[cylidx]
     #plt.cla()
-    print(f"x {x}")
-    print(f"y {y}")
-    print(f"xline {xline}")
-    print(f"yline {yline}")
+    #print(f"x {x}")
+    #print(f"y {y}")
+    #print(f"xline {xline}")
+    #print(f"yline {yline}")
     ax.clear()
     
     ax.plot(xline, yline, color='darkcyan')
@@ -77,10 +81,10 @@ axCyl_1 = plt.axes([0.18, 0, 0.1, 0.1])
 axCyl_2 = plt.axes([0.37, 0, 0.1, 0.1])
 axCyl_3 = plt.axes([0.55, 0, 0.1, 0.1])
 axCyl_4 = plt.axes([0.75, 0, 0.1, 0.1])
-btnCyl_1 = Button(axCyl_1, 'Cyl 1')
-btnCyl_2 = Button(axCyl_2, 'Cyl 2')
-btnCyl_3 = Button(axCyl_3, 'Cyl 3')
-btnCyl_4 = Button(axCyl_4, 'Cyl 4')
+btnCyl_1 = Button(axCyl_1, addCyl(1))
+btnCyl_2 = Button(axCyl_2, addCyl(2))
+btnCyl_3 = Button(axCyl_3, addCyl(3))
+btnCyl_4 = Button(axCyl_4, addCyl(4))
 btnCyl_1.on_clicked(addCyl_1)
 btnCyl_2.on_clicked(addCyl_2)
 btnCyl_3.on_clicked(addCyl_3)
