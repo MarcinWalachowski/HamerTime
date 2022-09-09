@@ -5,8 +5,7 @@ from matplotlib.animation import FuncAnimation
 from matplotlib.widgets import Button
 
 cylidx = 0
-minPress = 0.0
-maxPress = -0.7
+maxPress = 0.7
 x = [1, 2, 3, 4]
 y = [0, 0, 0, 0]
 xline = [0, 1, 2, 3, 4, 5]
@@ -49,9 +48,9 @@ def addCyl4(k):
 
 def animate(i):
     value = client.read_holding_registers(1, unit=0x01)
-    y1 = ((value.registers[0] - 400)/16000) * (0.7)
+    y1 = ((value.registers[0] - 400)/16000) * (maxPress)
     print(y1)
-    y = [0.1, 0.1, 0.2, 0.25]
+    y = [y1, 0.1, 0.2, 0.25]
     print(y)
     for n in range(len(xline)):
         yline[n] = y[cylidx]
