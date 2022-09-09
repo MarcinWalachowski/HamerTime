@@ -62,11 +62,7 @@ def animate(i):
     ax.fill_between(xlimit1, ylimit2, ylimit3, color = 'red')
     ax.bar(x,y,
             color= ['peachpuff', 'cyan', 'violet', 'wheat'])
-    #ax.legend(loc='lower center')
-    
-
-#value = client.read_holding_registers(0, 4, unit=0x01)
-#print(value.registers[0])
+    ax.axes.get_xaxis().set_visible(False)
 
 axCyl_1 = plt.axes([0.25, 0, 0.1, 0.1])
 axCyl_2 = plt.axes([0.39, 0, 0.1, 0.1])
