@@ -1,15 +1,22 @@
 import dearpygui.dearpygui as dpg
-import time, threading
-from math import sin
+import time, threading, random
+from pymodbus.client.sync import ModbusSerialClient as ModbusClient
 
 dpg.create_context()
 
 # creating data
 cylIdx = 0
+maxPress = 0.7
 sindatax = [1 , 2, 3, 4]
-sindatay = [0.1, 0.1, 0.1, 0.1]
+sindatay = [0.1, 0.4, 0.1, 0.8]
 sindataxline = [i for i in range(6)]
 sindatayline = [sindatay[0] for i in range(6)]
+
+#Modbus connection initialization
+client = ModbusClient(method='rtu', port='/dev/ttyUSB0', timeout=4, baudrate=9600, stopbits=1, bytesize=8, parity='N')
+print(client)
+connection = client.connect()
+print(connection)
 
 def buttonCyl_callback(sender, app_data, user_data):
     global cylIdx
@@ -18,7 +25,18 @@ def buttonCyl_callback(sender, app_data, user_data):
 
 def update_series():
     global cylIdx
-    sindatay[0] = sindatay[0] + 0.05
+    #Simulation
+    for i in range(len(sindatay)):
+        ytemp = random.uniform(0.2, 0.65)
+        if ytemp > 0.6:
+            sindatay[i] = random.uniform(0.55, 0.65)
+    #Modbus read values
+    #value = client.read_holding_registers(1, unit=0x01)
+    #y1 = ((value.registers[0] - 400) / 16000) * (maxPress)
+    #print(y1)
+    #sindatay = [y1, 0.1, 0.2, 0.25]
+    #print(y)
+
     #Update Cylinder pressure
     dpg.set_value('series_tag', [sindatax, sindatay])
     #Update value on the button in the table
@@ -33,6 +51,10 @@ def update_series():
     threading.Timer(0.5, update_series).start()
 
 with dpg.window(label="Tutorial", width=790, height=800):
+
+    with dpg.theme(tag="plot_theme"):
+        with dpg.theme_component(dpg.mvLineSeries):
+            dpg.add_theme_color(dpg.mvPlotCol_Line, (242, 27, 106), category=dpg.mvThemeCat_Plots)
 
     dpg.add_button(label="Start", callback=update_series)
 
@@ -61,7 +83,13 @@ with dpg.window(label="Tutorial", width=790, height=800):
         # series belong to a y axis
         dpg.add_bar_series(sindatax, sindatay, parent="y_axis", tag="series_tag", weight=0.75)
         dpg.add_line_series(sindataxline, sindatayline, parent="y_axis", tag="ImportantCylinder")
+        dpg.add_line_series(sindataxline, [0.5 for i in range(6)], parent="y_axis", tag="LL_band" )
+        dpg.add_line_series(sindataxline, [0.6 for i in range(6)], parent="y_axis", tag="ML_band")
+        dpg.add_line_series(sindataxline, [0.7 for i in range(6)], parent="y_axis", tag="HL_band")
 
+        # apply theme to series
+        dpg.bind_item_theme("LL_band", "plot_theme")
+        dpg.bind_item_theme("ML_band", "plot_theme")
 
 dpg.create_viewport(title='Custom Title', width=800, height=800)
 dpg.setup_dearpygui()
