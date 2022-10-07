@@ -13,10 +13,11 @@ sindataxline = [i for i in range(6)]
 sindatayline = [sindatay[0] for i in range(6)]
 
 #Modbus connection initialization
-client = ModbusClient(method='rtu', port='/dev/ttyUSB0', timeout=4, baudrate=9600, stopbits=1, bytesize=8, parity='N')
-print(client)
+#client = ModbusClient(method='rtu', port='/dev/ttyUSB0', timeout=4, baudrate=9600, stopbits=1, bytesize=8, parity='N')
+client = ModbusClient(method='rtu', port='COM6', timeout=4, baudrate=9600, stopbits=1, bytesize=8, parity='N')
+print(f"Modbus client parameters: {client}")
 connection = client.connect()
-print(connection)
+print(f"Do we have connection: {connection}")
 
 def buttonCyl_callback(sender, app_data, user_data):
     global cylIdx
@@ -26,16 +27,16 @@ def buttonCyl_callback(sender, app_data, user_data):
 def update_series():
     global cylIdx
     #Simulation
-    for i in range(len(sindatay)):
-        ytemp = random.uniform(0.2, 0.65)
-        if ytemp > 0.6:
-            sindatay[i] = random.uniform(0.55, 0.65)
+    #for i in range(len(sindatay)):
+     #   ytemp = random.uniform(0.2, 0.65)
+      #  if ytemp > 0.6:
+       #     sindatay[i] = random.uniform(0.55, 0.65)
     #Modbus read values
-    #value = client.read_holding_registers(1, unit=0x01)
-    #y1 = ((value.registers[0] - 400) / 16000) * (maxPress)
-    #print(y1)
-    #sindatay = [y1, 0.1, 0.2, 0.25]
-    #print(y)
+    value = client.read_holding_registers(1, unit=0x01)
+    y1 = ((value.registers[0] - 400) / 16000) * (maxPress)
+    print(y1)
+    sindatay = [y1, 0.1, 0.2, 0.25]
+    print(sindatay)
 
     #Update Cylinder pressure
     dpg.set_value('series_tag', [sindatax, sindatay])
