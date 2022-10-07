@@ -1,6 +1,7 @@
 import dearpygui.dearpygui as dpg
-import time, threading, random
+import time, threading, sys
 from pymodbus.client.sync import ModbusSerialClient as ModbusClient
+import pymodbus.register_read_message as ResponseClass
 
 dpg.create_context()
 
@@ -32,10 +33,13 @@ def update_series():
       #  if ytemp > 0.6:
        #     sindatay[i] = random.uniform(0.55, 0.65)
     #Modbus read values
-    value = client.read_holding_registers(1, unit=0x01)
-    y1 = ((value.registers[0] - 400) / 16000) * (maxPress)
-    print(y1)
-    sindatay = [y1, 0.1, 0.2, 0.25]
+    for i in range(1, 5):
+        value = client.read_holding_registers(1, unit=i)
+        if isinstance(value, ResponseClass.ReadHoldingRegistersResponse):
+            sindatay[i-1] = ((value.registers[0] - 400) / 16000) * (maxPress)
+        else:
+            sys.exit(f"Error when reading register on module {i}")
+    #sindatay = [y1, 0.1, 0.2, 0.25]
     print(sindatay)
 
     #Update Cylinder pressure

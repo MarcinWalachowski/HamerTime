@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="7b521861-af92-410e-b5a3-0b1ef8c64a3a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChangeAddress.py" beforeDir="false" afterPath="$PROJECT_DIR$/ChangeAddress.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CylinderIndicationDearPyGui.py" beforeDir="false" afterPath="$PROJECT_DIR$/CylinderIndicationDearPyGui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/N43IC04 4-channel 485 current acquisition module(en)/.~lock.N43IC04  modbus rtu protocol.docx#" beforeDir="false" afterPath="$PROJECT_DIR$/N43IC04 4-channel 485 current acquisition module(en)/.~lock.N43IC04  modbus rtu protocol.docx#" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
