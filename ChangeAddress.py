@@ -1,4 +1,4 @@
-from pymodbus.client.sync import ModbusSerialClient as ModbusClient
+from pymodbus.client.sync, import ModbusSerialClient as ModbusClient
 import pymodbus.register_read_message as ResponseClass
 
 #client = ModbusClient(method='rtu', port='/dev/ttyUSB0', timeout=4, baudrate=9600, stopbits=1, bytesize=8, parity='N')
@@ -16,7 +16,7 @@ for i in range(1, 256):
     else:
         pass
 
-address = int(input(f"New modbus address fo connected device: "))
+address = int(input(f"New modbus address for connected device: "))
 if input(f"Do you want to change the address (y/n): ") == 'y':
     respond = client.write_register(unit=cur_module_address, value=address, address=253)
     print(respond)
